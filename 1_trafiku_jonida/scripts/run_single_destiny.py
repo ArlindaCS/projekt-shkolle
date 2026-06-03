@@ -1,35 +1,24 @@
-import sys
 import os
-
+import sys
+# Shton direktorinë rrënjë në mënyrë që Python të gjejë modulin src
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from src.models.nasch import simulate_traffic
-from src.analysis.traffic_metrics import get_average_velocity, calculate_flux
-from src.visualization.spacetime import plot_space_time_diagram
+from src.models.nasch import NaSchModel
+from src.visualization.spacetime import save_spacetime_plot
 
-def main():
-    # Parametrat e simulimit
-    L = 100            # Gjatësia e rrugës
-    dendesia = 0.12    # Dendësi e ulët (provoni 0.4 për mesatare, 0.7 për të lartë)
-    v_max = 5          # Shpejtësia maksimale
-    p_ngadalesim = 0.3 # Probabiliteti i ngadalësimit stokastik
-    hapat = 50         # Hapat kohorë
-    
-    print(f"Duke simuluar trafikun për dendësinë: {dendesia}...")
-    history = simulate_traffic(L, dendesia, v_max, p_ngadalesim, hapat)
-    
-    # Llogaritja e metrikave në hapin e fundit
-    rruga_fundit = history[-1]
-    v_mes = get_average_velocity(rruga_fundit)
-    fluksi = calculate_flux(rruga_fundit, v_mes)
-    
-    print("\n=== REZULTATET E SIMULIMIT ===")
-    print(f"Shpejtësia mesatare finale: {v_mes:.2f}")
-    print(f"Fluksi final i trafikut: {fluksi:.4f}")
-    
-    # Shfaqja e diagramit hapësirë-kohë
-    print("\nDuke gjeneruar diagramin hapësirë-kohë...")
-    plot_space_time_diagram(history, title=f"Diagrami Hapësirë-Koha (Dendësia = {dendesia})")
+# Krijojmë dosjen e figurave nëse nuk ekziston
+os.makedirs('results/figures', exist_ok=True)
 
-if __name__ == "__main__":
-    main()
+scenarios = {
+    "low": {"density": 0.1, "title": "Dendësi e Ulët (rho=0.1) - Rrjedhë e Lirë"},
+    "medium": {"density": 0.3, "title": "Dendësi Mesatare (rho=0.3) - Formim Bllokimesh"},
+    "high": {"density": 0.7, "title": "Dendësi e Lartë (rho=0.7) - Bllokim i Plotë"}
+}
+
+for name, params in scenarios.items():
+    model = NaSchModel(road_length=150, density=params["density"], max_velocity=5, p_slow=0.3)
+    history = model.simulate(time_steps=120)
+    
+    output_path = f"results/figures/spacetime_{name}.png"
+    save_spacetime_plot(history, output_path, params["title"])
+    print(f"Grafiku u ruajt: {output_path}")
