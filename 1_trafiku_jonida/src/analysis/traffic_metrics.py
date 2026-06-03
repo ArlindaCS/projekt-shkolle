@@ -1,4 +1,4 @@
-iimport numpy as np
+import numpy as np
 
 def calculate_metrics(history, burn_in_ratio=0.5):
     """
