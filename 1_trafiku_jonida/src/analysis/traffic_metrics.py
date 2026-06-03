@@ -1,21 +1,30 @@
-import numpy as np
+iimport numpy as np
 
-def calculate_density(road):
-    """Llogarit dendësinë rho (numri i makinave / gjatësia e rrugës)."""
-    if len(road) == 0:
-        return 0.0
-    # Makinat shënohen me numra >= 0 (shpejtësitë), ndërsa -1 tregon hapësirë bosh
-    num_cars = np.sum(road >= 0)
-    return float(num_cars / len(road))
-
-def calculate_flux(road, average_velocity):
-    """Llogarit fluksin e trafikut J = rho * v_mesatare."""
-    rho = calculate_density(road)
-    return float(rho * average_velocity)
-
-def get_average_velocity(road):
-    """Llogarit shpejtësinë mesatare të makinave që janë aktualisht në rrugë."""
-    cars_velocities = road[road >= 0]
-    if len(cars_velocities) == 0:
-        return 0.0
-    return float(np.mean(cars_velocities))
+def calculate_metrics(history, burn_in_ratio=0.5):
+    """
+    Llogarit shpejtësinë mesatare dhe fluksin e qëndrueshëm të sistemit.
+    Injoron fazën fillestare (transiente) për të shmangur gabimet në matje.
+    """
+    time_steps, road_length = history.shape
+    start_step = int(time_steps * burn_in_ratio)
+    
+    # Konsiderojmë vetëm gjysmën e dytë të simulimit
+    steady_state = history[start_step:]
+    
+    # Krijojmë një maskë booleane ku ka makina (vlera nuk është -1)
+    car_mask = steady_state != -1
+    total_cars_tracked = np.sum(car_mask)
+    
+    if total_cars_tracked == 0:
+        return 0.0, 0.0, 0.0
+        
+    # Shpejtësia mesatare e të gjitha makinave gjatë kësaj kohe
+    avg_velocity = np.sum(steady_state[car_mask]) / total_cars_tracked
+    
+    # Dendësia reale e matur në këtë matricë
+    density = total_cars_tracked / (steady_state.shape[0] * road_length)
+    
+    # Formula kryesore: J = rho * <v>
+    flux = density * avg_velocity
+    
+    return density, avg_velocity, flux
