@@ -1,49 +1,46 @@
-import sys
 import os
+import sys
 import numpy as np
-
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from src.models.nasch import simulate_traffic
-from src.analysis.traffic_metrics import get_average_velocity, calculate_flux, calculate_density
-from src.visualization.spacetime import plot_fundamental_diagram
+from src.models.nasch import NaSchModel
+from src.analysis.traffic_metrics import calculate_metrics
+from src.visualization.spacetime import save_fundamental_diagram
 
-def run_density_scan(p_slowdown):
-    L = 100
-    v_max = 5
-    hapat = 100
-    
-    # Skanojmë dendësitë nga 0.03 deri në 0.95
-    input_densities = np.linspace(0.03, 0.95, 30)
-    measured_densities = []
-    measured_fluxes = []
-    
-    for d in input_densities:
-        history = simulate_traffic(L, d, v_max, p_slowdown, hapat)
-        # Marrim mesataren e 20 hapave të fundit për të qenë në gjendje të stabilizuar
-        history_fundit = history[-20:]
+os.makedirs('results/figures', exist_ok=True)
+os.makedirs('results/tables', exist_ok=True)
+
+# Gjenerojmë 25 pika të ndryshme dendësie nga 0.02 deri në 0.95
+densities = np.linspace(0.02, 0.95, 25)
+probabilities = [0.0, 0.2, 0.5]
+
+results_flux = {}
+table_data = []
+
+for p in probabilities:
+    fluxes = []
+    for rho in densities:
+        model = NaSchModel(road_length=200, density=rho, max_velocity=5, p_slow=p)
+        # Simulojmë mjaftueshëm hapa që sistemi të stabilizohet
+        history = model.simulate(time_steps=250)
         
-        flux_steps = []
-        density_steps = []
-        for rruga in history_fundit:
-            v_mes = get_average_velocity(rruga)
-            flux_steps.append(calculate_flux(rruga, v_mes))
-            density_steps.append(calculate_density(rruga))
+        real_rho, avg_v, flux = calculate_metrics(history)
+        fluxes.append(flux)
+        
+        # Ruajmë disa pika kyçe për tabelën tonë të raportit
+        if p == 0.2 and round(rho, 2) in [0.1, 0.3, 0.7]:
+            table_data.append((p, round(rho, 2), round(avg_v, 3), round(flux, 3)))
             
-        measured_densities.append(np.mean(density_steps))
-        measured_fluxes.append(np.mean(flux_steps))
-        
-    return measured_densities, measured_fluxes
+    results_flux[p] = fluxes
 
-def main():
-    print("Duke filluar skanimin e dendësive për Diagramin Fundamental...")
-    
-    # Skanimi për rastin stokastik (p = 0.3)
-    print("1. Duke kalkuluar rastin stokastik (p=0.3)...")
-    rho_stokastik, j_stokastik = run_density_scan(p_slowdown=0.3)
-    
-    # Shfaqja e Diagramit Fundamental për Jonidën
-    plot_fundamental_diagram(rho_stokastik, j_stokastik, title="Diagrami Fundamental J(rho) - Modeli Nagel-Schreckenberg")
+# Ruajmë diagramin fundamental
+save_fundamental_diagram(densities, results_flux, "results/figures/fundamental_diagram.png")
+print("Diagrami Fundamental u ruajt te 'results/figures/fundamental_diagram.png'")
 
-if __name__ == "__main__":
-    main()
+# Ruajmë tabelën e metrikave në format teksti (Markdown/CSV)
+with open("results/tables/metrics_summary.txt", "w") as f:
+    f.write("| Probabiliteti (p) | Dendësia (rho) | Shpejtësia Mesatare (<v>) | Fluksi (J) |\n")
+    f.write("|-------------------|----------------|---------------------------|------------|\n")
+    for row in table_data:
+        f.write(f"| {row[0]} | {row[1]} | {row[2]} | {row[3]} |\n")
+print("Tabela e metrikave u ruajt te 'results/tables/metrics_summary.txt'")
