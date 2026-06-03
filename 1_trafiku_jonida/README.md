@@ -1,11 +1,7 @@
 # Projekti 1: Model Qelizor i Trafikut Nagel–Schreckenberg dhe Diagrami Fundamental
 
-**Studenti:** Jonida  
+**Studenti:** Jonida  Klari
 **Lënda:** Modelim dhe Simulim  
-
-
-##  Përshkrimi i Projektit
-Ky projekt implementon një automat qelizor njëdimensional (1D Cellular Automaton) për simulimin e trafikut rrugor, bazuar në modelin klasik **Nagel–Schreckenberg (NaSch)**. Qëllimi është të studiohet formimi spontan i bllokimeve të trafikut (Traffic Jams) nga rregullat lokale të sjelljes së shoferëve, si dhe të ndërtohet diagrami fundamental që lidh fluksin e makinave me dendësinë.
 
 
 # 🚗 Model Qelizor i Trafikut Nagel–Schreckenberg (Grupi 3)
