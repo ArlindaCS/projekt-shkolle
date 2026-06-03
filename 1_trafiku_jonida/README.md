@@ -1,6 +1,6 @@
 # Projekti 1: Model Qelizor i Trafikut Nagel–Schreckenberg dhe Diagrami Fundamental
 
-**Studenti:** Jonida  Klari
+**Studenti:** Jonida Klari
 **Lënda:** Modelim dhe Simulim  
 
 
