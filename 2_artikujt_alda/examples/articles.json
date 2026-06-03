@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Introduction to Quantum Computing",
+    "abstract": "A basic overview of quantum bits, gates, and algorithms for beginners.",
+    "year": 2024,
+    "citations": [2, 3],
+    "field": "Physics"
+  },
+  {
+    "id": 2,
+    "title": "Advanced Quantum Algorithms",
+    "abstract": "An in-depth analysis of quantum search algorithms and error correction.",
+    "year": 2025,
+    "citations": [3],
+    "field": "Physics"
+  },
+  {
+    "id": 3,
+    "title": "Applications of Quantum Mechanics in Computing",
+    "abstract": "This article reviews how physics principles like superposition enable computing.",
+    "year": 2026,
+    "citations": [],
+    "field": "Physics"
+  }
+]
