@@ -30,8 +30,7 @@ Veçantia kryesore e Oshilatorit Van der Pol është ekzistenca e një **Cikli L
 * Për vlera të mëdha të $\mu$ ($\mu \gg 1$), sistemi kthehet në një *oshilator relaksimi*, ku sistemi lëviz ngadalë në disa faza dhe kërcen shpejt në faza të tjera.
 
 ### 3. Struktura e Kodit (Arkitektura Modulare)
-Kodi është organizuar në mënyrë profesionale në folderin `3_van_der_pol_arlinda/` sipas strukturës së kërkuar nga profesori:
-
+Kodi është organizuar në folderin `3_van_der_pol_arlinda/`
 ```text
 3_van_der_pol_arlinda/
 ├── README.md                  # Dokumentacioni i projektit
