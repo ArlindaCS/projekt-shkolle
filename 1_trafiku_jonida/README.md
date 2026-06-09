@@ -5,18 +5,18 @@
 **Lënda:** Modelim dhe Simulim  
 
 
-# 🚗 Model Qelizor i Trafikut Nagel–Schreckenberg (Grupi 3)
+#  Model Qelizor i Trafikut Nagel–Schreckenberg (Grupi 3)
 
 Ky projekt është zhvilluar në kuadër të kursit **“Modelim në Fizikë”**. Qëllimi kryesor është simulimi i trafikut njëdimensional autostradal duke përdorur Automate Qelizore (Cellular Automata) dhe studimi makroskopik i formimit të bllokimeve spontane të trafikut (*phantom traffic jams*).
 
 ---
 
-## 🎯 Qëllimi Shkencor
+##  Qëllimi Shkencor
 Projekti synon të rikrijojë tranzicionin e fazës në trafikun rrugor: nga një **regjim i rrjedhës së lirë** (ku makinat lëvizin me shpejtësi maksimale) në një **regjim të bllokuar** (ku krijohen valë bllokimi që propagandojnë mbrapsht në raport me lëvizjen e makinave). Përmes skanimit të parametrave, ndërtohet *Diagrami Fundamental* i cili lidh densitetin e makinave me fluksin e përgjithshëm të sistemit.
 
 ---
 
-## 📐 Ekuacionet Kryesore dhe Rregullat e Modelit
+## Ekuacionet Kryesore dhe Rregullat e Modelit
 
 Modeli Nagel-Schreckenberg (NaSch) është një model diskret hapësirë-kohë. Rruga ndahet në qeliza me gjatësi $L$. Çdo qelizë ose është e zbrazët, ose përmban një makinë të vetme me shpejtësi $v \in \{0, 1, \dots, v_{max}\}$.
 
@@ -42,7 +42,7 @@ Në çdo hap kohor $t \rightarrow t+1$, shpejtësia $v_i$ dhe pozicioni $x_i$ i 
 
 ---
 
-## 📁 Struktura e Repozitorit
+##  Struktura e Repozitorit
 
 ```text
 traffic_cellular_automaton/
