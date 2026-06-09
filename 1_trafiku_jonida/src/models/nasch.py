@@ -1,4 +1,4 @@
-# Shkrimi i Modeleve (Logjika Fizike)
+# Logjika Fizike
 
 # Ky kod përmban "trurin" e simulimit. Ne po krijojmë një automat qelizor ku rruga është një varg (array) dhe makinat lëvizin sipas rregullave lokale.
 import numpy as np
