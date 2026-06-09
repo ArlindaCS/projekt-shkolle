@@ -1,5 +1,5 @@
-Vizualizimi
-Diagrami hapësirë-kohë dhe ai fundamental.
+# Vizualizimi
+# Diagrami hapësirë-kohë dhe ai fundamental.
 
 import matplotlib.pyplot as plt
 
