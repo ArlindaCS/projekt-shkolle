@@ -7,7 +7,7 @@ from src.models.nasch import NaSchModel
 from src.visualization.spacetime import save_spacetime
 import numpy as np
 
-Në këtë rast po testojmë një dendësi mesatare ($\rho = 0.25$) ku pritet të shfaqen valët e para të trafikut.
+# Në këtë rast po testojmë një dendësi mesatare ($\rho = 0.25$) ku pritet të shfaqen valët e para të trafikut.
 def main():
     # Parametrat e simulimit të vetëm
     L = 100         # Gjatësia e rrugës (100 qeliza)
