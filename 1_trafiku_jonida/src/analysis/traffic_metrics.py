@@ -1,5 +1,5 @@
-Analiza (Llogaritja e Metrikave)
-Këtu llogarisim fluksin, që është madhësia kryesore për Diagramin Fundamental.
+# Analiza (Llogaritja e Metrikave)
+# Këtu llogarisim fluksin, që është madhësia kryesore për Diagramin Fundamental.
 
 import numpy as np
 
