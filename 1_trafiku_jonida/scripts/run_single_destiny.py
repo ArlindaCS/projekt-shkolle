@@ -1,24 +1,46 @@
-import os
 import sys
-# Shton direktorinë rrënjë në mënyrë që Python të gjejë modulin src
+import os
+# Shton folderin kryesor në sistem që Python të gjejë modulet tona
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from src.models.nasch import NaSchModel
-from src.visualization.spacetime import save_spacetime_plot
+from src.visualization.spacetime import save_spacetime
+import numpy as np
 
-# Krijojmë dosjen e figurave nëse nuk ekziston
-os.makedirs('results/figures', exist_ok=True)
+Në këtë rast po testojmë një dendësi mesatare ($\rho = 0.25$) ku pritet të shfaqen valët e para të trafikut.
+def main():
+    # Parametrat e simulimit të vetëm
+    L = 100         # Gjatësia e rrugës (100 qeliza)
+    T = 120         # Hapat kohorë (sa sekonda zgjat simulimi)
+    v_max = 5       # Shpejtësia maksimale
+    p = 0.2         # Probabiliteti i ngadalësimit
+    density = 0.25  # Dendësia e makinave (25% e rrugës plot)
 
-scenarios = {
-    "low": {"density": 0.1, "title": "Dendësi e Ulët (rho=0.1) - Rrjedhë e Lirë"},
-    "medium": {"density": 0.3, "title": "Dendësi Mesatare (rho=0.3) - Formim Bllokimesh"},
-    "high": {"density": 0.7, "title": "Dendësi e Lartë (rho=0.7) - Bllokim i Plotë"}
-}
-
-for name, params in scenarios.items():
-    model = NaSchModel(road_length=150, density=params["density"], max_velocity=5, p_slow=0.3)
-    history = model.simulate(time_steps=120)
+    # Krijojmë objektin e modelit
+    model = NaSchModel(L, v_max, p)
     
-    output_path = f"results/figures/spacetime_{name}.png"
-    save_spacetime_plot(history, output_path, params["title"])
-    print(f"Grafiku u ruajt: {output_path}")
+    # Shpërndajmë makinat në rrugë
+    num_cars = int(density * L)
+    pos = np.random.choice(L, num_cars, replace=False)
+    model.road[pos] = np.random.randint(0, v_max + 1, num_cars)
+history = []
+    
+    for t in range(T):
+        # Ruajmë gjendjen aktuale (1 nëse ka makinë, 0 nëse është bosh)
+        current_state = np.where(model.road != -1, 1, 0)
+        history.append(current_state)
+        
+        # Kalojmë në sekondën tjetër duke zbatuar rregullat NaSch
+        model.step()
+        # Kthejmë listën në një matricë NumPy
+    history_matrix = np.array(history)
+    
+    # Ruajmë grafikun te folderi i rezultateve
+    output_path = "results/figures/spacetime_density_025.png"
+    save_spacetime(history_matrix, output_path)
+    print(f"Simulimi u krye me sukses! Grafiku u ruajt te: {output_path}")
+
+if __name__ == "__main__":
+    main()
+    
+        
